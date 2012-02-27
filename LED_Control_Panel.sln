@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LED_Control_Panel", "LED_Control_Panel\LED_Control_Panel.csproj", "{122F7653-D2DC-45C8-974A-F0BE4D4BBEF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{122F7653-D2DC-45C8-974A-F0BE4D4BBEF1}.Debug|x86.ActiveCfg = Debug|x86
+		{122F7653-D2DC-45C8-974A-F0BE4D4BBEF1}.Debug|x86.Build.0 = Debug|x86
+		{122F7653-D2DC-45C8-974A-F0BE4D4BBEF1}.Release|x86.ActiveCfg = Release|x86
+		{122F7653-D2DC-45C8-974A-F0BE4D4BBEF1}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
