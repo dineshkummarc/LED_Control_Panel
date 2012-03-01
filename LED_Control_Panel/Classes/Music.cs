@@ -6,6 +6,7 @@ using Un4seen.Bass;
 using System.Windows.Forms;
 using System.Drawing;
 
+
 namespace LED_Control_Panel
 {
     partial class ledControlPanel
@@ -124,10 +125,10 @@ namespace LED_Control_Panel
 
         private void colorMusic1(float[] fft)
         {
-            colors[0] = ColorHandler.FromAhsb(255, Color.Red.GetHue(), 1f,(float)calculateMiddle(fft, 0, 5));
-            colors[1] = ColorHandler.FromAhsb(255, Color.Yellow.GetHue(), 1f , (float)calculateMiddle(fft, 6, 19));
-            colors[2] = ColorHandler.FromAhsb(255,Color.Green.GetHue(),1f, (float)calculateMiddle(fft, 20, 81));
-            colors[3] = ColorHandler.FromAhsb(255,Color.Blue.GetHue(),1f, (float)calculateMiddle(fft, 82, 116));
+            colors[0] = ColorHandler.FromAhsb(255, Color.Red.GetHue(), 1f,(float)Math.Pow(calculateMiddle(fft, 0, 5),0.5));
+            colors[1] = ColorHandler.FromAhsb(255, Color.Yellow.GetHue(), 1f , (float)Math.Pow(calculateMiddle(fft, 6, 19),0.5));
+            colors[2] = ColorHandler.FromAhsb(255,Color.Green.GetHue(),1f, (float)Math.Pow(calculateMiddle(fft, 20, 81),0.5));
+            colors[3] = ColorHandler.FromAhsb(255,Color.Blue.GetHue(),1f, (float)Math.Pow(calculateMiddle(fft, 82, 116),0.5));
 
             Elements.arduino.setColor(colors);
             Application.DoEvents();

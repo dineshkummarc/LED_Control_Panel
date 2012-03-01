@@ -1,0 +1,11 @@
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\bin\Debug\LED_Control_Panel.exe
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\bin\Debug\LED_Control_Panel.pdb
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\bin\Debug\Bass.Net.dll
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\bin\Debug\Bass.Net.xml
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\LED_Control_Panel.ledControlPanel.resources
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\LED_Control_Panel.Properties.Resources.resources
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\LED_Control_Panel.exe
+C:\Users\Alex\documents\visual studio 2010\Projects\LED_Control_Panel\LED_Control_Panel\obj\x86\Debug\LED_Control_Panel.pdb
