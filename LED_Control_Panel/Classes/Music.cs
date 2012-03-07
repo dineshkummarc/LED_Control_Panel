@@ -57,7 +57,7 @@ namespace LED_Control_Panel
         private void timerUpdate_Tick(object sender, System.EventArgs e)
         {
             Bass.BASS_ChannelGetData(recChannel, fft, (int)BASSData.BASS_DATA_FFT512);
-            colorMusic1(fft);
+            colorMusic2(fft);
             DrawSpectrum();
         }
 
@@ -125,10 +125,28 @@ namespace LED_Control_Panel
 
         private void colorMusic1(float[] fft)
         {
-            colors[0] = ColorHandler.FromAhsb(255, Color.Red.GetHue(), 1f,(float)Math.Pow(calculateMiddle(fft, 0, 5),0.5));
-            colors[1] = ColorHandler.FromAhsb(255, Color.Yellow.GetHue(), 1f , (float)Math.Pow(calculateMiddle(fft, 6, 19),0.5));
-            colors[2] = ColorHandler.FromAhsb(255,Color.Green.GetHue(),1f, (float)Math.Pow(calculateMiddle(fft, 20, 81),0.5));
-            colors[3] = ColorHandler.FromAhsb(255,Color.Blue.GetHue(),1f, (float)Math.Pow(calculateMiddle(fft, 82, 116),0.5));
+            float[] amps = new float[4];
+
+            if ((amps[0] = (float)Math.Pow(calculateMiddle(fft, 0, 5), 1)) > ampRtrackbar.Value / 100)
+                colors[0] = ColorHandler.FromAhsb(255, Color.Red.GetHue(), 1f, amps[0]);
+            else
+                colors[0] = Color.Black;
+
+            if ((amps[1] = (float)Math.Pow(calculateMiddle(fft, 6, 19), 1)) > ampYtrackbar.Value/100)
+                colors[1] = ColorHandler.FromAhsb(255, Color.Yellow.GetHue(), 1f, amps[1]);
+            else
+                colors[1] = Color.Black;
+
+            if ((amps[2] = (float)Math.Pow(calculateMiddle(fft, 20, 81), 1)) > ampGtrackbar.Value / 100)
+                colors[2] = ColorHandler.FromAhsb(255, Color.Green.GetHue(), 1f, amps[2]);
+            else
+                colors[2] = Color.Black;
+
+            if ((amps[3] = (float)Math.Pow(calculateMiddle(fft, 82, 116), 1)) > ampBtrackbar.Value / 100)
+                colors[3] = ColorHandler.FromAhsb(255, Color.Blue.GetHue(), 1f, amps[3]);
+            else
+                colors[3] = Color.Black;
+
 
             Elements.arduino.setColor(colors);
             Application.DoEvents();
@@ -138,7 +156,48 @@ namespace LED_Control_Panel
 
 
         }
-        
+
+
+        private void colorMusic2(float[] fft)
+        {
+            int x;
+            double[] y=new double[8];
+            int b0=0;
+            int Bands=8;
+            for (x = 0; x < Bands; x++)
+            {
+                float peak = 0;
+                int b1 = (int)Math.Pow(2, x * 10.0 / (Bands - 1));
+                if (b1 > 254) b1 = 254;
+                if (b1 <= b0) b1 = b0 + 1; // make sure it uses at least 1 FFT bin
+                for (; b0 < b1; b0++)
+                    if (peak < fft[1 + b0]) peak = fft[1 + b0];
+                y[x] = Math.Sqrt(peak)*3*100-4; // scale it (sqrt to make low values more visible)
+                if (y[x] > 100) y[x] = 100;
+
+                if (y[x] < 60) y[x] = 0;// cap it
+            }
+            debugTextBox.Text = y[0].ToString()+'\n'+y[2].ToString()+'\n'+y[4].ToString()+'\n'+y[6].ToString();
+
+            float hue;
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 0)
+                    hue = Color.Red.GetHue();
+                else if (i == 1)
+                    hue = Color.Yellow.GetHue();
+                else if (i == 2)
+                    hue = Color.Green.GetHue();
+                else
+                    hue = Color.Blue.GetHue();
+
+                colors[i] = ColorHandler.FromAhsb(255, hue, 1f, (float)((y[2*i]/100)*0.7));
+            }
+            Elements.arduino.setColor(colors);
+            for (int i = 0; i < 4; i++)
+                colors[i] = Color.Black;
+
+        }
 
         private int specIdx = 15;
         private int voicePrintIdx = 0;
