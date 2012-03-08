@@ -29,8 +29,9 @@ namespace LED_Control_Panel
 
             cbMusicRefresh();
 
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            debugTextBox.Text = ColorHandler.HSVtoColor(85, 255, 50).ToString();
+
         }
 
         public void SetPanelColors(Color[] colors)
@@ -367,13 +368,38 @@ namespace LED_Control_Panel
             {
                 MusicStart.Text = "Start";
                 updateTimer.Stop();
+                musicStarted = false;
             }
             else
             {
-                MusicStart.Text = "Stop";
-                updateTimer.Start();
+                if (inicialized)
+                {
+                    MusicStart.Text = "Stop";
+                    updateTimer.Start();
+                    musicStarted = true;
+                }
             }
         }
+
+        private void sensTR_Scroll(object sender, EventArgs e)
+        {
+            sensTrLb.Text = sensTR.Value.ToString();
+        }
+
+        private void mySpectrumPanel_Click(object sender, EventArgs e)
+        {
+            MouseEventArgs args =(MouseEventArgs) e;
+
+            currentBarrier = args.X * 4 / mySpectrumWidth;
+            barrierTb.Value = barriers[currentBarrier];
+        }
+
+        private void barrierTb_Scroll(object sender, EventArgs e)
+        {
+            barriers[currentBarrier] = barrierTb.Value;
+        }
+
+
 
 
       

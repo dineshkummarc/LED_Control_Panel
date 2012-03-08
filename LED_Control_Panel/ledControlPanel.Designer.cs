@@ -53,6 +53,10 @@
             this.label18 = new System.Windows.Forms.Label();
             this.Effects = new System.Windows.Forms.TabPage();
             this.Music = new System.Windows.Forms.TabPage();
+            this.barrierTb = new System.Windows.Forms.TrackBar();
+            this.mySpectrumPanel = new System.Windows.Forms.PictureBox();
+            this.sensTrLb = new System.Windows.Forms.Label();
+            this.sensTR = new System.Windows.Forms.TrackBar();
             this.MusicStart = new System.Windows.Forms.Button();
             this.spectrumBox = new System.Windows.Forms.PictureBox();
             this.RefreshMusicDevices = new System.Windows.Forms.Button();
@@ -111,13 +115,12 @@
             this.pnlSelectedColor = new System.Windows.Forms.Panel();
             this.pnlBrightness = new System.Windows.Forms.Panel();
             this.Label2 = new System.Windows.Forms.Label();
-            this.ampRtrackbar = new System.Windows.Forms.TrackBar();
-            this.ampGtrackbar = new System.Windows.Forms.TrackBar();
-            this.ampYtrackbar = new System.Windows.Forms.TrackBar();
-            this.ampBtrackbar = new System.Windows.Forms.TrackBar();
             this.useCaseTabs.SuspendLayout();
             this.ColorTab.SuspendLayout();
             this.Music.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.barrierTb)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mySpectrumPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sensTR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spectrumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.led11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.led21)).BeginInit();
@@ -131,10 +134,6 @@
             this.led2Panel.SuspendLayout();
             this.led3Panel.SuspendLayout();
             this.led4Panel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ampRtrackbar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ampGtrackbar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ampYtrackbar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ampBtrackbar)).BeginInit();
             this.SuspendLayout();
             // 
             // useCaseTabs
@@ -389,10 +388,10 @@
             // Music
             // 
             this.Music.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.Music.Controls.Add(this.ampBtrackbar);
-            this.Music.Controls.Add(this.ampYtrackbar);
-            this.Music.Controls.Add(this.ampGtrackbar);
-            this.Music.Controls.Add(this.ampRtrackbar);
+            this.Music.Controls.Add(this.barrierTb);
+            this.Music.Controls.Add(this.mySpectrumPanel);
+            this.Music.Controls.Add(this.sensTrLb);
+            this.Music.Controls.Add(this.sensTR);
             this.Music.Controls.Add(this.MusicStart);
             this.Music.Controls.Add(this.spectrumBox);
             this.Music.Controls.Add(this.RefreshMusicDevices);
@@ -403,9 +402,49 @@
             this.Music.TabIndex = 2;
             this.Music.Text = "Music";
             // 
+            // barrierTb
+            // 
+            this.barrierTb.Location = new System.Drawing.Point(251, 164);
+            this.barrierTb.Maximum = 170;
+            this.barrierTb.Name = "barrierTb";
+            this.barrierTb.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.barrierTb.Size = new System.Drawing.Size(45, 170);
+            this.barrierTb.TabIndex = 7;
+            this.barrierTb.Visible = false;
+            this.barrierTb.Scroll += new System.EventHandler(this.barrierTb_Scroll);
+            // 
+            // mySpectrumPanel
+            // 
+            this.mySpectrumPanel.Location = new System.Drawing.Point(302, 164);
+            this.mySpectrumPanel.Name = "mySpectrumPanel";
+            this.mySpectrumPanel.Size = new System.Drawing.Size(190, 170);
+            this.mySpectrumPanel.TabIndex = 6;
+            this.mySpectrumPanel.TabStop = false;
+            this.mySpectrumPanel.Click += new System.EventHandler(this.mySpectrumPanel_Click);
+            // 
+            // sensTrLb
+            // 
+            this.sensTrLb.AutoSize = true;
+            this.sensTrLb.Location = new System.Drawing.Point(23, 266);
+            this.sensTrLb.Name = "sensTrLb";
+            this.sensTrLb.Size = new System.Drawing.Size(19, 13);
+            this.sensTrLb.TabIndex = 5;
+            this.sensTrLb.Text = "60";
+            // 
+            // sensTR
+            // 
+            this.sensTR.Location = new System.Drawing.Point(17, 282);
+            this.sensTR.Maximum = 100;
+            this.sensTR.Name = "sensTR";
+            this.sensTR.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.sensTR.Size = new System.Drawing.Size(45, 327);
+            this.sensTR.TabIndex = 4;
+            this.sensTR.Value = 60;
+            this.sensTR.Scroll += new System.EventHandler(this.sensTR_Scroll);
+            // 
             // MusicStart
             // 
-            this.MusicStart.Location = new System.Drawing.Point(302, 165);
+            this.MusicStart.Location = new System.Drawing.Point(302, 340);
             this.MusicStart.Name = "MusicStart";
             this.MusicStart.Size = new System.Drawing.Size(190, 23);
             this.MusicStart.TabIndex = 3;
@@ -958,42 +997,6 @@
             this.Label2.Text = "Green";
             this.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // ampRtrackbar
-            // 
-            this.ampRtrackbar.Location = new System.Drawing.Point(17, 256);
-            this.ampRtrackbar.Maximum = 100;
-            this.ampRtrackbar.Name = "ampRtrackbar";
-            this.ampRtrackbar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.ampRtrackbar.Size = new System.Drawing.Size(45, 327);
-            this.ampRtrackbar.TabIndex = 4;
-            // 
-            // ampGtrackbar
-            // 
-            this.ampGtrackbar.Location = new System.Drawing.Point(119, 256);
-            this.ampGtrackbar.Maximum = 100;
-            this.ampGtrackbar.Name = "ampGtrackbar";
-            this.ampGtrackbar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.ampGtrackbar.Size = new System.Drawing.Size(45, 327);
-            this.ampGtrackbar.TabIndex = 5;
-            // 
-            // ampYtrackbar
-            // 
-            this.ampYtrackbar.Location = new System.Drawing.Point(68, 256);
-            this.ampYtrackbar.Maximum = 100;
-            this.ampYtrackbar.Name = "ampYtrackbar";
-            this.ampYtrackbar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.ampYtrackbar.Size = new System.Drawing.Size(45, 327);
-            this.ampYtrackbar.TabIndex = 6;
-            // 
-            // ampBtrackbar
-            // 
-            this.ampBtrackbar.Location = new System.Drawing.Point(170, 256);
-            this.ampBtrackbar.Maximum = 100;
-            this.ampBtrackbar.Name = "ampBtrackbar";
-            this.ampBtrackbar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.ampBtrackbar.Size = new System.Drawing.Size(45, 327);
-            this.ampBtrackbar.TabIndex = 7;
-            // 
             // ledControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1027,6 +1030,9 @@
             this.ColorTab.ResumeLayout(false);
             this.Music.ResumeLayout(false);
             this.Music.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.barrierTb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mySpectrumPanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sensTR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spectrumBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.led11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.led21)).EndInit();
@@ -1044,10 +1050,6 @@
             this.led3Panel.PerformLayout();
             this.led4Panel.ResumeLayout(false);
             this.led4Panel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ampRtrackbar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ampGtrackbar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ampYtrackbar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ampBtrackbar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1138,10 +1140,10 @@
         private System.Windows.Forms.ComboBox cbMusicDevices;
         private System.Windows.Forms.PictureBox spectrumBox;
         private System.Windows.Forms.Button MusicStart;
-        private System.Windows.Forms.TrackBar ampBtrackbar;
-        private System.Windows.Forms.TrackBar ampYtrackbar;
-        private System.Windows.Forms.TrackBar ampGtrackbar;
-        private System.Windows.Forms.TrackBar ampRtrackbar;
+        private System.Windows.Forms.TrackBar sensTR;
+        private System.Windows.Forms.Label sensTrLb;
+        private System.Windows.Forms.PictureBox mySpectrumPanel;
+        private System.Windows.Forms.TrackBar barrierTb;
     }
 }
 

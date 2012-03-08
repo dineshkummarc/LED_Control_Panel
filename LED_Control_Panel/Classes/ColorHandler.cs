@@ -58,7 +58,7 @@ public class ColorHandler
 				return Color.FromArgb(RGB.Red, RGB.Green, RGB.Blue);
 			}
 
-			public static Color HSVtoColor( int H,  int S,  int V) 
+			public static Color HSVtoColor(int H,  int S,  int V) 
 			{
 				return HSVtoColor(new HSV(H, S, V));
 			}
@@ -233,6 +233,16 @@ public class ColorHandler
 				// application. All values are between 0 and 255.
 				return new HSV((int)(h / 360 * 255), (int)(s * 255), (int)(v * 255));
 			}
+
+
+            public static HSV ColorToHSV(Color color)
+            {
+                RGB temp;
+                temp.Red=color.R;
+                temp.Green=color.G;
+                temp.Blue=color.B;
+                return RGBtoHSV(temp);
+            }
 
 
             /// <summary>
