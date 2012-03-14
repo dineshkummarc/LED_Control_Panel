@@ -60,7 +60,7 @@ namespace LED_Control_Panel
         {
             Bass.BASS_ChannelGetData(recChannel, fft, (int)BASSData.BASS_DATA_FFT2048);
             //colorMusic2(fft);
-            drawMySpectrum(fft);
+            drawMySpectrumCM2(fft);
             DrawSpectrum();
         }
 
@@ -143,10 +143,8 @@ namespace LED_Control_Panel
 //---------------------------------------------My Spectrum------------------------------------------------------------------------
         
         
-        private Graphics graphics;
         private BufferedGraphics graphBuff;
         private BufferedGraphicsContext graphContext;
-        private Bitmap mySpectrumBuffer;
         private int mySpectrumHieght;
         private int mySpectrumWidth;
         private LinearGradientBrush brush;
@@ -165,8 +163,6 @@ namespace LED_Control_Panel
             graphContext.MaximumBuffer = new Size(mySpectrumWidth + 1, mySpectrumHieght + 1);
             graphBuff = graphContext.Allocate(mySpectrumPanel.CreateGraphics(), new Rectangle(0,0,mySpectrumWidth,mySpectrumHieght));
 
-            mySpectrumBuffer = new Bitmap(mySpectrumWidth, mySpectrumHieght);
-            graphics = mySpectrumPanel.CreateGraphics();
             brush = new LinearGradientBrush(new Point(0,0),new Point (0,mySpectrumHieght),Color.Red,Color.Lime);
             graphBuff.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed; //пофиг качество главное скорость
 
@@ -174,7 +170,7 @@ namespace LED_Control_Panel
             
         }
 
-        private void drawMySpectrum(float[] fft)
+        private void drawMySpectrumCM(float[] fft)
         {
             
             int Bands = 16;
@@ -184,7 +180,6 @@ namespace LED_Control_Panel
             int b0 = (int)Math.Pow(2, 3 * 10.0 / (Bands - 1));
             float[] peaks=new float[4];
             int[] y = new int[Bands];
-            mySpectrumPanel.BackgroundImage = mySpectrumBuffer;
             graphBuff.Graphics.Clear(Color.Black);
             for (int x = 0; x < Bands; x++)
             {
@@ -215,15 +210,11 @@ namespace LED_Control_Panel
             }
 
             float hue;
-            int debugHeight=0;
             for (int i = 0; i < 4; i++)
             {
                 int height = (int)(Math.Sqrt(peaks[i]) * scaleFactor * mySpectrumHieght - 4);
                 if (height > mySpectrumHieght) height = mySpectrumHieght;
 
-                if (i == 0) debugHeight = height;
-
-                //height = mySpectrumHieght - height;//инвертируем для нормального восприятия т.к. у визуализатора 0 сверху
                 
                 graphBuff.Graphics.DrawLine(new Pen(Color.Blue, 3), new Point(i * mySpectrumWidth / 4, mySpectrumHieght - height),
                     new Point((i + 1) * mySpectrumWidth / 4 - 2, mySpectrumHieght - height));//общие линии
@@ -255,14 +246,114 @@ namespace LED_Control_Panel
                      colors[i] = ColorHandler.HSVtoColor(nColor);
                  }
             }
-            debugTextBox.Text = barriers[0] + "   " + debugHeight+"   "+((double)debugHeight/(double)mySpectrumHieght);
             graphBuff.Render(mySpectrumPanel.CreateGraphics());
             Elements.arduino.setColor(colors);
          }
 
 
+        private float[] oldPeaks={0,0,0,0};
+        private int counter = 0;
+        private void drawMySpectrumCM2(float[] fft)
+        {
 
-//---------------------------------------------Default Spectrum-------------------------------------------------------------------
+            float scaleFactor = 2;
+            int Bands=16;
+            int fadeSpeed = 5;
+
+            int b0 = (int)Math.Pow(2, 3 * 10.0 / (Bands - 1));
+            float[] peaks = new float[4];
+            int[] y = new int[Bands];
+            graphBuff.Graphics.Clear(Color.Black);
+            for (int x = 0; x < Bands; x++)
+            {
+                float peak = 0;
+                int b1 = (int)Math.Pow(2, x * 10.0 / (Bands - 1));//хз откуда они взяли такую формулу, но математикам-музыкантам виднее
+
+                if (b1 > fft.Length - 1) b1 = fft.Length - 1;
+
+                //if (b0 > fft.Length - 2) b0 = fft.Length - 2;
+
+                if (b1 <= b0) b1 = b0 + 1; // make sure it uses at least 1 FFT bin
+
+
+                for (; b0 < b1; b0++)
+                {
+                    if (peak < fft[1 + b0]) peak = fft[1 + b0];
+                    if (peaks[x / (Bands / 4)] < fft[1 + b0]) peaks[x / (Bands / 4)] = fft[1 + b0];
+                }
+
+
+                y[x] = (int)(Math.Sqrt(peak) * scaleFactor * mySpectrumHieght - 4); // scale it (sqrt to make low values more visible)
+
+                if (y[x] > mySpectrumHieght) y[x] = mySpectrumHieght;// cap it
+
+                graphBuff.Graphics.FillRectangle(brush,
+                    new Rectangle(x * (mySpectrumWidth / Bands), mySpectrumHieght - y[x], mySpectrumWidth / Bands - 2, y[x]));
+
+            }
+
+
+            float hue;
+            for (int i = 0; i < 4; i++)
+            {
+                float delta = oldPeaks[i] - peaks[i];
+
+                delta = -delta;
+
+                if (delta < 0) delta = 0;
+
+                delta *= 10 * mySpectrumHieght;
+
+                if (delta > mySpectrumHieght) delta = mySpectrumHieght;
+
+                graphBuff.Graphics.DrawLine(new Pen(Color.Blue, 3), new Point(i * mySpectrumWidth / 4, mySpectrumHieght - (int)delta),
+                    new Point((i + 1) * mySpectrumWidth / 4 - 2, mySpectrumHieght - (int)delta));//общие линии
+
+                graphBuff.Graphics.DrawLine(new Pen(Color.Violet, 3f), new Point(i * mySpectrumWidth / 4, mySpectrumHieght - barriers[i]),
+                   new Point((i + 1) * mySpectrumWidth / 4 - 2, mySpectrumHieght - barriers[i])); //барьеры
+
+                if (i == 3)
+                    debugTextBox.Text = ((int)delta).ToString()+"\n"+delta;
+
+                if (i == 0)
+                    hue = Color.Red.GetHue();
+                else if (i == 1)
+                    hue = Color.Yellow.GetHue();
+                else if (i == 2)
+                    hue = Color.Green.GetHue();
+                else
+                    hue = Color.Blue.GetHue();
+
+                 if (delta > barriers[i])
+                     colors[i] = ColorHandler.HSVtoColor((int)hue, 255, (int)(((double)delta / (double)mySpectrumHieght) * 0.7 * 255));
+                 else
+                 {
+                     ColorHandler.HSV nColor=ColorHandler.ColorToHSV(colors[i]);
+
+                     nColor.value -= fadeSpeed;
+
+                     if (nColor.value < 0) nColor.value = 0;
+
+                     colors[i] = ColorHandler.HSVtoColor(nColor);
+                 }
+            }
+
+
+            
+
+
+                //debugTextBox.Text = (oldPeaks[0] - peaks[0])*3*mySpectrumHieght + "\n" + (oldPeaks[1] - peaks[1]) + "\n"
+                //+ (oldPeaks[2] - peaks[2]) + "\n" + (oldPeaks[3] - peaks[3]);
+
+                peaks.CopyTo(oldPeaks, 0);
+
+            graphBuff.Render(mySpectrumPanel.CreateGraphics());
+            Elements.arduino.setColor(colors);
+
+        }
+
+
+        //---------------------------------------------Default Spectrum-------------------------------------------------------------------
         private int specIdx = 15;
         private int voicePrintIdx = 0;
         private void DrawSpectrum()
